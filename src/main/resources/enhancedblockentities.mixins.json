@@ -1,0 +1,28 @@
+{
+  "package": "foundationgames.enhancedblockentities.mixin",
+  "required": true,
+  "minVersion": "0.8",
+  "refmap": "${id}.mixins.refmap.json",
+  "compatibilityLevel": "${java}",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+  ],
+  "client": [
+    "AbstractBlockStateMixin",
+    "AbstractSignBlockEntityRenderAccessor",
+    "BellBlockEntityMixin",
+    "BlockEntityRenderDispatcherMixin",
+    "BuiltChunkMixin",
+    "ChestBlockEntityMixin",
+    "DecoratedPotBlockEntityMixin",
+    "EnderChestBlockEntityMixin",
+    "LifecycledResourceManagerImplMixin",
+    "MinecraftClientMixin",
+    "ShulkerBoxBlockEntityMixin",
+    "SignEditScreenMixin",
+    "VideoOptionsScreenMixin",
+    "WorldRendererMixin"
+  ]
+}

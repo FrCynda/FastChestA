@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "name": "${name}",
+  "version": "${version}",
+  "authors": ["${authors}"],
+  "contributors": ["${contributors}"],
+  "contact": {
+    "sources": "${sources_url}",
+    "issues": "${issues_url}",
+    "homepage": "${homepage_url}"
+  },
+  "description": "${description}",
+  "icon": "icon.png",
+  "license": "${license}",
+  "environment": "*",
+  "accessWidener": "aw/${sc_version}.accesswidener",
+  "entrypoints": {
+    "client": [
+      "foundationgames.enhancedblockentities.EnhancedBlockEntities"
+    ],
+    "modmenu": [
+      "foundationgames.enhancedblockentities.config.gui.EBEModMenuPlugin"
+    ]
+  },
+  "mixins": [
+    "${id}.mixins.json",
+    "${id}.sodium.mixins.json"
+  ],
+  "depends": {}
+}
