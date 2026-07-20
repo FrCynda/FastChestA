@@ -4,8 +4,6 @@ pluginManagement {
 		mavenCentral()
 		gradlePluginPortal()
 		maven("https://maven.fabricmc.net/") { name = "Fabric" }
-		maven("https://maven.neoforged.net/releases/") { name = "NeoForged" }
-		maven("https://maven.minecraftforge.net/") { name = "MinecraftForge" }
 		maven("https://repo.spongepowered.org/repository/maven-public/") { name = "Sponge" }
 		maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie Snapshots" }
 		maven("https://maven.kikugie.dev/releases") { name = "KikuGie Releases" }
@@ -52,140 +50,44 @@ stonecutter {
 			return null
 		}
 
-		if (env("GRADLE_MULTILOADER") == "true") {
-			// Ported range, all three loaders
-			match("26.2", "fabric", "forge", "neoforge")
-			match("26.1", "fabric", "forge", "neoforge")
-
-			match("1.21.11", "fabric", "forge", "neoforge")
-			match("1.21.9", "fabric", "forge", "neoforge")
-			match("1.21.6", "fabric", "forge", "neoforge")
-			match("1.21.5", "fabric", "forge", "neoforge")
-			match("1.21.4", "fabric", "forge", "neoforge")
-		}
-		else if (env("GRADLE_TEST") == "true") {
-			match("26.1", "forge")
-			match("1.21", "forge")
-			match("1.20.5", "forge")
-			match("1.20", "forge")
-
-			match("1.19.4", "forge")
-			match("1.19.2", "forge")
-			match("1.18", "forge")
-			match("1.17", "forge")
-			match("1.16", "forge")
-			match("1.15", "forge")
-		}
-		else if (env("GRADLE_ONLY_IMPORTANT_FABRIC") == "true") {
-			// Main Fabric versions, this is the recommended setting for development
-			match("26.3", "fabric")
+		// This fork is Fabric-only: Forge/NeoForge loader branches from upstream
+		// EnhancedBlockEntitiesReloaded have been removed. See plan Phase 0-3.
+		if (env("GRADLE_ONLY_IMPORTANT_FABRIC") == "true") {
+			// A handful of versions spanning every era, for fast local dev loops.
 			match("26.2", "fabric")
-			match("26.1", "fabric")
 			match("1.21.11", "fabric")
+			match("1.21.2", "fabric")
 			match("1.21", "fabric")
 		}
-		else if (env("GRADLE_ONLY_FABRIC") == "true") {
-			// All Fabric versions
-			match("26.3", "fabric")
+		else if (env("GRADLE_FULL_RANGE") == "true") {
+			// Full 16-version target range (see plan Phase 1): Minecraft 1.21 and
+			// newer only. Most of these have no real //? if branches written yet
+			// beyond what upstream EBE already had at 1.21.4+ - building them
+			// will fail until the per-era mixins/models described in the plan
+			// are ported.
 			match("26.2", "fabric")
+			match("26.1.2", "fabric")
+			match("26.1.1", "fabric")
 			match("26.1", "fabric")
-
 			match("1.21.11", "fabric")
+			match("1.21.10", "fabric")
 			match("1.21.9", "fabric")
+			match("1.21.8", "fabric")
+			match("1.21.7", "fabric")
 			match("1.21.6", "fabric")
 			match("1.21.5", "fabric")
 			match("1.21.4", "fabric")
+			match("1.21.3", "fabric")
 			match("1.21.2", "fabric")
+			match("1.21.1", "fabric")
 			match("1.21", "fabric")
-
-			match("1.20.5", "fabric")
-			match("1.20.3", "fabric")
-			match("1.20.2", "fabric")
-			match("1.20", "fabric")
-
-			match("1.19.4", "fabric")
-			match("1.19.2", "fabric")
-			match("1.18", "fabric")
-			match("1.17", "fabric")
-			match("1.16", "fabric")
-			match("1.15", "fabric")
-			match("1.14", "fabric")
-		}
-		else if (env("GRADLE_ONLY_FORGE") == "true") {
-			match("26.2", "forge")
-			match("26.1", "forge")
-
-			match("1.21.11", "forge")
-			match("1.21.9", "forge")
-			match("1.21.6", "forge")
-			match("1.21.5", "forge")
-			match("1.21.4", "forge")
-		}
-		else if (env("GRADLE_ONLY_NEOFORGE") == "true") {
-			match("26.2", "neoforge")
-			match("26.1", "neoforge")
-
-			match("1.21.11", "neoforge")
-			match("1.21.9", "neoforge")
-			match("1.21.6", "neoforge")
-			match("1.21.5", "neoforge")
-			match("1.21.4", "neoforge")
 		}
 		else {
-			// All versions
-			/*
-			match("26.3", "fabric")
-			match("26.2", "fabric", "forge", "neoforge")
-			match("26.1", "fabric", "forge", "neoforge")
-
-			match("1.21.11", "fabric", "forge", "neoforge")
-			match("1.21.9", "fabric", "forge", "neoforge")
-			match("1.21.6", "fabric", "forge", "neoforge")
-			match("1.21.5", "fabric", "forge", "neoforge")
-			match("1.21.4", "fabric", "forge", "neoforge")
-			match("1.21.2", "fabric", "forge", "neoforge")
-			match("1.21", "fabric", "forge", "neoforge")
-
-			match("1.20.5", "fabric", "forge", "neoforge")
-			match("1.20.3", "fabric", "neoforge")
-			match("1.20.2", "fabric")
-			match("1.20", "fabric", "forge")
-
-			match("1.19.4", "fabric", "forge")
-			match("1.19.2", "fabric", "forge")
-
-			match("1.18", "fabric", "forge")
-			match("1.17", "fabric", "forge")
-			match("1.16", "fabric", "forge")
-			match("1.15", "fabric", "forge")
-			match("1.14", "fabric")
-			*/
-
-			match("26.3", "fabric")
-			match("26.2", "fabric", "forge", "neoforge")
-			match("26.1", "fabric", "forge", "neoforge")
-
-			match("1.21.11", "fabric", "forge", "neoforge")
-			match("1.21.9", "fabric", "forge", "neoforge")
-			match("1.21.6", "fabric", "forge", "neoforge")
-			match("1.21.5", "fabric", "forge", "neoforge")
-			match("1.21.4", "fabric", "forge", "neoforge")
+			// Phase 0 default: single version, Fabric only. Switch to
+			// GRADLE_FULL_RANGE=true once the per-era work in the plan lands.
+			match("26.2", "fabric")
 		}
 
-		if (env("GRADLE_MULTILOADER") == "true") {
-			vcsVersion = "1.21.4-fabric"
-		}
-		else if (env("GRADLE_TEST") == "true") {
-			vcsVersion = "1.21-forge"
-		}
-		else if (env("GRADLE_ONLY_FORGE") == "true") {
-			vcsVersion = "26.2-forge"
-		}
-		else if (env("GRADLE_ONLY_NEOFORGE") == "true") {
-			vcsVersion = "26.2-neoforge"
-		}
-		else {
-			vcsVersion = "1.21.4-fabric"
-		}
+		vcsVersion = "26.2-fabric"
 	}
 }
