@@ -18,6 +18,7 @@
     "ChestBlockEntityMixin",
     "DecoratedPotBlockEntityMixin",
     "EnderChestBlockEntityMixin",
+    "LevelChunkAccessor",
     "LifecycledResourceManagerImplMixin",
     "MinecraftClientMixin",
     "ShulkerBoxBlockEntityMixin",
