@@ -61,28 +61,19 @@ stonecutter {
 			match("1.21", "fabric")
 		}
 		else if (env("GRADLE_FULL_RANGE") == "true") {
-			// Full 17-version target range (see plan Phase 1): Minecraft 1.21 and
-			// newer only. Most of these have no real //? if branches written yet
-			// beyond what upstream EBE already had at 1.21.4+ - building them
-			// will fail until the per-era mixins/models described in the plan
-			// are ported.
-			match("26.3", "fabric")
-			match("26.2", "fabric")
-			match("26.1.2", "fabric")
-			match("26.1.1", "fabric")
-			match("26.1", "fabric")
-			match("1.21.11", "fabric")
-			match("1.21.10", "fabric")
-			match("1.21.9", "fabric")
-			match("1.21.8", "fabric")
-			match("1.21.7", "fabric")
-			match("1.21.6", "fabric")
-			match("1.21.5", "fabric")
-			match("1.21.4", "fabric")
-			match("1.21.3", "fabric")
-			match("1.21.2", "fabric")
-			match("1.21.1", "fabric")
-			match("1.21", "fabric")
+			// Full 17-version target range (see plan Phase 1), covered by 10 actual
+			// Stonecutter nodes - dot releases with no API changes publish from the
+			// same node via publish.additionalVersions in that node's gradle.properties.
+			match("26.3", "fabric")       // 26.3
+			match("26.2", "fabric")       // 26.2
+			match("26.1", "fabric")       // 26.1, 26.1.1, 26.1.2
+			match("1.21.11", "fabric")    // 1.21.11
+			match("1.21.9", "fabric")     // 1.21.9, 1.21.10
+			match("1.21.6", "fabric")     // 1.21.6, 1.21.7, 1.21.8
+			match("1.21.5", "fabric")     // 1.21.5
+			match("1.21.4", "fabric")     // 1.21.4
+			match("1.21.2", "fabric")     // 1.21.2, 1.21.3
+			match("1.21", "fabric")       // 1.21, 1.21.1
 		}
 		else {
 			// Phase 0 default: single version, Fabric only. Switch to
