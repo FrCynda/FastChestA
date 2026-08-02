@@ -201,7 +201,17 @@ public enum EBEUtil {;
     //?}
     //?}
 
-    //? if <= 1.21.4 {
+    //? if <= 1.21.1 {
+    /*public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BakedModel model, int light, int overlay) {
+        if (model == null) return;
+        VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state, false));
+        for (int i = 0; i <= 6; i++) {
+            for (BakedQuad q : model.getQuads(null, faceFromIndex(i), dummy)) {
+                vertices.putBulkData(matrices.last(), q, 1, 1, 1, 1, light, overlay);
+            }
+        }
+    }
+    *///?} else if <= 1.21.4 {
     /*public static void renderBakedModel(MultiBufferSource vertexConsumers, BlockState state, PoseStack matrices, BakedModel model, int light, int overlay) {
         if (model == null) return;
         VertexConsumer vertices = vertexConsumers.getBuffer(ItemBlockRenderTypes.getRenderType(state));

@@ -1,7 +1,11 @@
 package foundationgames.enhancedblockentities.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+//? if <= 1.21.3 {
+/*import net.minecraft.client.renderer.blockentity.SignRenderer;
+*///?} else {
 import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
+//?}
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -15,7 +19,11 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.state.SignRenderState;
 //?}
 
+//? if <= 1.21.3 {
+/*@Mixin(SignRenderer.class)
+*///?} else {
 @Mixin(AbstractSignRenderer.class)
+//?}
 public interface AbstractSignBlockEntityRenderAccessor {
     //? if <= 1.21.11 {
     /*@Invoker("translateSign")

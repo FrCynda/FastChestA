@@ -38,6 +38,92 @@ public class DynamicUnbakedModel implements IUnbakedGeometry<DynamicUnbakedModel
         return new DynamicBakedModel(baked, selector, effects);
     }
 }
+*///?} else if <= 1.21.1 {
+/*import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.resources.Identifier;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.function.Function;
+
+public class DynamicUnbakedModel implements UnbakedModel {
+    private final Identifier[] models;
+    private final ModelSelector selector;
+    private final DynamicModelEffects effects;
+
+    public DynamicUnbakedModel(Identifier[] models, ModelSelector selector, DynamicModelEffects effects) {
+        this.models = models;
+        this.selector = selector;
+        this.effects = effects;
+    }
+
+    @Override
+    public Collection<Identifier> getDependencies() {
+        var deps = new ArrayList<Identifier>();
+        for (Identifier modelId : models) {
+            if (modelId == null) continue;
+            deps.add(modelId);
+        }
+        return deps;
+    }
+
+    @Override
+    public void resolveParents(Function<Identifier, UnbakedModel> modelGetter) {
+    }
+
+    @Override
+    public BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState settings) {
+        BakedModel[] baked = new BakedModel[models.length];
+        for (int i = 0; i < models.length; i++) {
+            baked[i] = baker.bake(models[i], settings);
+        }
+        return new DynamicBakedModel(baked, selector, effects);
+    }
+}
+*///?} else if <= 1.21.3 {
+/*import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.resources.Identifier;
+
+import java.util.function.Function;
+
+public class DynamicUnbakedModel implements UnbakedModel {
+    private final Identifier[] models;
+    private final ModelSelector selector;
+    private final DynamicModelEffects effects;
+
+    public DynamicUnbakedModel(Identifier[] models, ModelSelector selector, DynamicModelEffects effects) {
+        this.models = models;
+        this.selector = selector;
+        this.effects = effects;
+    }
+
+    @Override
+    public void resolveDependencies(Resolver resolver) {
+        for (Identifier modelId : models) {
+            if(modelId == null) continue;
+            resolver.resolve(modelId);
+        }
+    }
+
+    @Override
+    public BakedModel bake(ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState settings) {
+        BakedModel[] baked = new BakedModel[models.length];
+        for (int i = 0; i < models.length; i++) {
+            baked[i] = baker.bake(models[i], settings);
+        }
+        return new DynamicBakedModel(baked, selector, effects);
+    }
+}
 *///?} else if <= 1.21.4 {
 /*import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.block.model.TextureSlots;

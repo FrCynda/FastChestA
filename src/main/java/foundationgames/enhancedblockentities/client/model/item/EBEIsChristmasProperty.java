@@ -1,5 +1,6 @@
 package foundationgames.enhancedblockentities.client.model.item;
 
+//? if >= 1.21.4 {
 import com.mojang.serialization.MapCodec;
 import foundationgames.enhancedblockentities.util.DateUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,3 +23,4 @@ public record EBEIsChristmasProperty() implements ConditionalItemModelProperty {
         return CODEC;
     }
 }
+//?}

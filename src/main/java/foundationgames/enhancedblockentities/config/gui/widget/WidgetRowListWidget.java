@@ -52,7 +52,11 @@ public class WidgetRowListWidget extends ContainerObjectSelectionList<WidgetRowL
     }
 
     @Override
+    //? if <= 1.21.3 {
+    /*protected int getScrollbarPosition() {
+    *///?} else {
     protected int scrollBarX() {
+    //?}
         return this.width - 6;
     }
 

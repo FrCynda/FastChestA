@@ -389,6 +389,13 @@ public enum EBESetup {;
                         DynamicModelEffects.DECORATED_POT
                 )
         );
+
+        //? if fabric && <= 1.21.3 {
+        /*EBEChestModelResolverPlugin.registerAll();
+        EBEShulkerBoxModelResolverPlugin.registerAll();
+        EBEDecoratedPotModelResolverPlugin.registerAll();
+        EBEBellModelResolverPlugin.registerAll();
+        *///?}
     }
 
     private static void putCutoutMipped(Block block) {
@@ -550,8 +557,10 @@ public enum EBESetup {;
                 Blocks.CHERRY_SIGN, Blocks.CHERRY_WALL_SIGN,
                 Blocks.CRIMSON_SIGN, Blocks.CRIMSON_WALL_SIGN,
                 Blocks.WARPED_SIGN, Blocks.WARPED_WALL_SIGN,
-                Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN,
-                Blocks.PALE_OAK_SIGN, Blocks.PALE_OAK_WALL_SIGN
+                Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN
+                //? if >= 1.21.3 {
+                , Blocks.PALE_OAK_SIGN, Blocks.PALE_OAK_WALL_SIGN
+                //?}
         }) {
             EnhancedBlockEntityRegistry.register(sign, BlockEntityTypes.SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()
@@ -569,8 +578,10 @@ public enum EBESetup {;
                 Blocks.CHERRY_HANGING_SIGN, Blocks.CHERRY_WALL_HANGING_SIGN,
                 Blocks.CRIMSON_HANGING_SIGN, Blocks.CRIMSON_WALL_HANGING_SIGN,
                 Blocks.WARPED_HANGING_SIGN, Blocks.WARPED_WALL_HANGING_SIGN,
-                Blocks.BAMBOO_HANGING_SIGN, Blocks.BAMBOO_WALL_HANGING_SIGN,
-                Blocks.PALE_OAK_HANGING_SIGN, Blocks.PALE_OAK_WALL_HANGING_SIGN
+                Blocks.BAMBOO_HANGING_SIGN, Blocks.BAMBOO_WALL_HANGING_SIGN
+                //? if >= 1.21.3 {
+                , Blocks.PALE_OAK_HANGING_SIGN, Blocks.PALE_OAK_WALL_HANGING_SIGN
+                //?}
         }) {
             EnhancedBlockEntityRegistry.register(sign, BlockEntityTypes.HANGING_SIGN, BlockEntityRenderCondition.SIGN,
                     new SignBlockEntityRendererOverride()

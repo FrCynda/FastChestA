@@ -1,2 +1,5 @@
 accessWidener v2 named
 
+accessible class net/minecraft/client/OptionInstance$ValueSet
+accessible field net/minecraft/client/gui/screens/inventory/AbstractSignEditScreen sign Lnet/minecraft/world/level/block/entity/SignBlockEntity;
+accessible method com/mojang/blaze3d/platform/NativeImage writeToChannel (Ljava/nio/channels/WritableByteChannel;)Z

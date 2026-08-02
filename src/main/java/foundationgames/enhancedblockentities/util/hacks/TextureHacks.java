@@ -30,7 +30,11 @@ public enum TextureHacks {;
                 NativeImage prod = new NativeImage(src.format(), sw, sh, false);
                 for (int u = 0; u < sw; u++) {
                     for (int v = 0; v < sh; v++) {
+                        //? if <= 1.21.1 {
+                        /*prod.setPixelRGBA(u, v, src.getPixelRGBA(x + u, y + v));
+                        *///?} else {
                         prod.setPixel(u, v, src.getPixel(x + u, y + v));
+                        //?}
                     }
                 }
                 src.close();

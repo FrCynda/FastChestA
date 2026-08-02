@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
 import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-//? if <= 1.21.11 {
+//? if >= 1.21.2 <= 1.21.11 {
 /*import net.minecraft.server.packs.BuiltInMetadata;
 *///?}
 import net.minecraft.server.packs.PackLocationInfo;
@@ -17,7 +17,11 @@ import net.minecraft.server.packs.PackType;
 //? if >= 1.21.9 {
 import net.minecraft.util.InclusiveRange;
 //?}
+//? if <= 1.21.3 {
+/*import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+*///?} else {
 import net.minecraft.server.packs.metadata.MetadataSectionType;
+//?}
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
@@ -140,17 +144,31 @@ public class EBEPack implements PackResources {
 
     @Nullable
     @Override
-    public <T> T getMetadataSection(MetadataSectionType<T> meta) {
-        //? if <= 1.21.6 {
-        /*return BuiltInMetadata.of(PackMetadataSection.TYPE, this.packMeta).get(meta);
-        *///?} else {
-        //? if <= 1.21.11 {
-        /*return BuiltInMetadata.of(PackMetadataSection.CLIENT_TYPE, this.packMeta).get(meta);
-        *///?} else {
-        return PackMetadataSection.CLIENT_TYPE.withValue(this.packMeta).unwrapToType(meta).orElse(null);
-        //?}
-        //?}
+    //? if <= 1.21.1 {
+    /*public <T> T getMetadataSection(MetadataSectionSerializer<T> meta) {
+        if (meta == PackMetadataSection.TYPE) {
+            //noinspection unchecked
+            return (T) this.packMeta;
+        }
+        return null;
     }
+    *///?} else if <= 1.21.3 {
+    /*public <T> T getMetadataSection(MetadataSectionSerializer<T> meta) {
+        return BuiltInMetadata.of(PackMetadataSection.TYPE, this.packMeta).get(meta);
+    }
+    *///?} else if <= 1.21.6 {
+    /*public <T> T getMetadataSection(MetadataSectionType<T> meta) {
+        return BuiltInMetadata.of(PackMetadataSection.TYPE, this.packMeta).get(meta);
+    }
+    *///?} else if <= 1.21.11 {
+    /*public <T> T getMetadataSection(MetadataSectionType<T> meta) {
+        return BuiltInMetadata.of(PackMetadataSection.CLIENT_TYPE, this.packMeta).get(meta);
+    }
+    *///?} else {
+    public <T> T getMetadataSection(MetadataSectionType<T> meta) {
+        return PackMetadataSection.CLIENT_TYPE.withValue(this.packMeta).unwrapToType(meta).orElse(null);
+    }
+    //?}
 
     @Override
     public PackLocationInfo location() {

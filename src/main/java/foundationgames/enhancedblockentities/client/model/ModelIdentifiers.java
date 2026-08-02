@@ -380,7 +380,18 @@ public final class ModelIdentifiers implements ModelLoadingPlugin {
     }
     *///?}
 
-    //? if fabric && <= 1.21.4 {
+    //? if fabric && <= 1.21.1 {
+    /*@Override
+    public void onInitializeModelLoader(Context ctx) {
+        var config = EnhancedBlockEntities.CONFIG;
+
+        for (var entry : modelLoaders.entrySet()) {
+            if (entry.getKey().test(config)) {
+                ctx.addModels(entry.getValue());
+            }
+        }
+    }
+    *///?} else if fabric && <= 1.21.4 {
     /*@Override
     public void initialize(Context ctx) {
         var config = EnhancedBlockEntities.CONFIG;

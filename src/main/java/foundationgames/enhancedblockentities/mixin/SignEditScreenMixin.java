@@ -33,7 +33,9 @@ public class SignEditScreenMixin {
     *///?} else {
     @Inject(method = "extractSignBackground", at = @At("HEAD"), cancellable = true)
     //?}
-    //? if <= 1.21.11 {
+    //? if <= 1.21 {
+    /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, BlockState ignoredState, CallbackInfo ci) {
+    *///?} else if <= 1.21.11 {
     /*private void enhanced_bes$renderBakedModelSign(GuiGraphics context, CallbackInfo ci) {
     *///?} else {
     private void enhanced_bes$renderBakedModelSign(GuiGraphicsExtractor context, CallbackInfo ci) {

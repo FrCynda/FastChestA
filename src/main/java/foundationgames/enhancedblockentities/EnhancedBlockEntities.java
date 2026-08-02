@@ -1,7 +1,9 @@
 package foundationgames.enhancedblockentities;
 
 import foundationgames.enhancedblockentities.client.model.ModelIdentifiers;
+//? if >= 1.21.4 {
 import foundationgames.enhancedblockentities.client.model.item.EBEIsChristmasProperty;
+//?}
 import foundationgames.enhancedblockentities.client.render.SignRenderManager;
 import foundationgames.enhancedblockentities.client.resource.template.TemplateLoader;
 import foundationgames.enhancedblockentities.config.EBEConfig;
@@ -26,7 +28,9 @@ import foundationgames.enhancedblockentities.client.render.gui.SignGuiElementRen
 //?}
 import foundationgames.enhancedblockentities.platform.Platform;
 import net.minecraft.client.Minecraft;
+//? if >= 1.21.4 {
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
+//?}
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,7 +63,9 @@ public final class EnhancedBlockEntities implements ClientModInitializer {
         Platform.forEachApiEntrypoint(API_V1, Consumer.class,
                 (modId, init) -> init.accept((Runnable) EnhancedBlockEntities::load));
 
+        //? if >= 1.21.4 {
         ConditionalItemModelProperties.ID_MAPPER.put(EBEUtil.id("ebe_is_christmas"), EBEIsChristmasProperty.CODEC);
+        //?}
 
         ModelIdentifiers.init();
         EBESetup.setupResourceProviders();
