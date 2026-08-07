@@ -54,17 +54,19 @@ stonecutter {
 		// EnhancedBlockEntitiesReloaded have been removed. See plan Phase 0-3.
 		if (env("GRADLE_ONLY_IMPORTANT_FABRIC") == "true") {
 			// A handful of versions spanning every era, for fast local dev loops.
+			match("26.3", "fabric")
 			match("26.2", "fabric")
 			match("1.21.11", "fabric")
 			match("1.21.2", "fabric")
 			match("1.21", "fabric")
 		}
 		else if (env("GRADLE_FULL_RANGE") == "true") {
-			// Full 16-version target range (see plan Phase 1): Minecraft 1.21 and
+			// Full 17-version target range (see plan Phase 1): Minecraft 1.21 and
 			// newer only. Most of these have no real //? if branches written yet
 			// beyond what upstream EBE already had at 1.21.4+ - building them
 			// will fail until the per-era mixins/models described in the plan
 			// are ported.
+			match("26.3", "fabric")
 			match("26.2", "fabric")
 			match("26.1.2", "fabric")
 			match("26.1.1", "fabric")
