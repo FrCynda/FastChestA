@@ -2,6 +2,7 @@ package foundationgames.enhancedblockentities.mixin;
 
 import foundationgames.enhancedblockentities.EnhancedBlockEntities;
 import foundationgames.enhancedblockentities.client.render.entity.ChestBlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.util.WorldUtil;
 import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnderChestBlockEntity.class)
 public abstract class EnderChestBlockEntityMixin extends BlockEntity implements AppearanceStateHolder {
@@ -26,12 +28,33 @@ public abstract class EnderChestBlockEntityMixin extends BlockEntity implements 
 
     @Inject(method = "lidAnimateTick", at = @At(value = "TAIL"))
     private static void enhanced_bes$listenForOpenClose(Level world, BlockPos pos, BlockState state, EnderChestBlockEntity blockEntity, CallbackInfo ci) {
-        var lid = ChestBlockEntityRendererOverride.getLidAnimationHolder(blockEntity, 0.5f);
-        int mState = lid.getOpenNess(0.5f) > 0 ? 1 : 0;
+        if (!EnhancedBlockEntities.CONFIG.renderEnhancedChests) return;
 
-        if (EnhancedBlockEntities.CONFIG.renderEnhancedChests && ((AppearanceStateHolder)blockEntity).getModelState() != mState) {
+        var lid = ChestBlockEntityRendererOverride.getLidAnimationHolder(blockEntity, 0.5f);
+        // Each frame the lid is drawn lerped between last tick's openness and this tick's, so
+        // it is only really shut once both ends are zero. Handing over to the static model at
+        // this tick's value instead would cut the closing animation a frame short, and stopping
+        // the ticker there would leave the lerp sweeping between the two with no tick left to
+        // settle it -- the lid flutters.
+        boolean shut = lid.getOpenNess(1f) <= 0 && lid.getOpenNess(0f) <= 0;
+        int mState = shut ? 0 : 1;
+
+        if (((AppearanceStateHolder)blockEntity).getModelState() != mState) {
             ((AppearanceStateHolder)blockEntity).updateAppearanceState(mState, world, pos);
         }
+
+        // See ChestBlockEntityMixin: closed chests stop ticking until a block event wakes them.
+        if (shut) {
+            WorldUtil.setTicking(world, pos, blockEntity, false);
+        }
+    }
+
+    @Inject(method = "triggerEvent", at = @At("RETURN"))
+    private void enhanced_bes$wakeOnBlockEvent(int id, int type, CallbackInfoReturnable<Boolean> cir) {
+        var self = (EnderChestBlockEntity)(Object)this;
+        var world = self.getLevel();
+        if (world == null || !world.isClientSide()) return;
+        WorldUtil.setTicking(world, self.getBlockPos(), self, true);
     }
 
     @Override

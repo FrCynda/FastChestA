@@ -8,6 +8,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import foundationgames.enhancedblockentities.mixin.LevelChunkAccessor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +22,20 @@ public enum WorldUtil {
 
     // 26.2 routes setBlocksDirty through ModelManager.requiresRender, which is false for two equal
     // states, so the section is never queued for a remesh and renderState never arrives
+    // Chests only tick on the client, and a closed chest's ticker does nothing but wait for an
+    // open event that arrives as a block event regardless of ticking. So we unregister the ticker
+    // while the lid is fully shut and register it again on the event -- this is where FastChest's
+    // speed comes from, except we can wake back up and animate.
+    public static void setTicking(Level world, BlockPos pos, BlockEntity blockEntity, boolean ticking) {
+        if (!world.isClientSide()) return;
+        var chunk = world.getChunkAt(pos);
+        if (ticking) {
+            ((LevelChunkAccessor) chunk).enhanced_bes$updateTicker(blockEntity);
+        } else {
+            ((LevelChunkAccessor) chunk).enhanced_bes$removeTicker(pos);
+        }
+    }
+
     public static void rebuildChunk(Level world, BlockPos pos) {
         //? if <= 26.1 {
         /*var state = world.getBlockState(pos);
