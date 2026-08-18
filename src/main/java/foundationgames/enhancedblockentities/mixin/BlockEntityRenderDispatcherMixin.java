@@ -45,8 +45,8 @@ public class BlockEntityRenderDispatcherMixin {
             cancellable = true
     )
     private static void enhanced_bes$renderOverrides(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource output, CallbackInfo ci) {
-        if (EnhancedBlockEntityRegistry.ENTITIES.containsKey(blockEntity.getType()) && EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getBlockState().getBlock())) {
-            EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
+        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.BLOCKS.get(blockEntity.getBlockState().getBlock());
+        if (entry != null) {
             if (entry.condition().shouldRender(blockEntity)) {
                 entry.renderer().render(renderer, blockEntity, tickDelta, matrices, output, LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY);
             }
@@ -61,8 +61,8 @@ public class BlockEntityRenderDispatcherMixin {
             cancellable = true
     )
     private static void enhanced_bes$renderOverrides(BlockEntityRenderer<BlockEntity> renderer, BlockEntity blockEntity, float tickDelta, PoseStack matrices, MultiBufferSource output, Vec3 cameraPos, CallbackInfo ci) {
-        if (EnhancedBlockEntityRegistry.ENTITIES.containsKey(blockEntity.getType()) && EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getBlockState().getBlock())) {
-            EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
+        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.BLOCKS.get(blockEntity.getBlockState().getBlock());
+        if (entry != null) {
             if (entry.condition().shouldRender(blockEntity)) {
                 entry.renderer().render(renderer, blockEntity, tickDelta, matrices, output, LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY);
             }
@@ -72,13 +72,8 @@ public class BlockEntityRenderDispatcherMixin {
     *///?}
     //? if >= 1.21.9 {
     private static boolean enhanced_bes$isOverridden(BlockEntity blockEntity) {
-        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.ENTITIES.get(blockEntity.getType());
-
-        if (entry == null || !EnhancedBlockEntityRegistry.BLOCKS.contains(blockEntity.getBlockState().getBlock())) {
-            return false;
-        }
-
-        return !entry.condition().shouldRender(blockEntity);
+        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.BLOCKS.get(blockEntity.getBlockState().getBlock());
+        return entry != null && !entry.condition().shouldRender(blockEntity);
     }
 
     //? if neoforge && <= 26.1 {
@@ -110,9 +105,8 @@ public class BlockEntityRenderDispatcherMixin {
 
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     private void enhanced_bes$renderOverrides(BlockEntityRenderState renderState, PoseStack matrices, SubmitNodeCollector output, CameraRenderState cameraState, CallbackInfo ci) {
-        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.ENTITIES.get(renderState.blockEntityType);
-
-        if (entry == null || !EnhancedBlockEntityRegistry.BLOCKS.contains(renderState.blockState.getBlock())) return;
+        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.BLOCKS.get(renderState.blockState.getBlock());
+        if (entry == null) return;
 
         ci.cancel();
 

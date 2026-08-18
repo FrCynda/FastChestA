@@ -42,7 +42,7 @@ public class SignEditScreenMixin {
 
         boolean enhanceSigns = EnhancedBlockEntities.CONFIG.renderEnhancedSigns;
 
-        if (!EnhancedBlockEntityRegistry.BLOCKS.contains(state.getBlock())) return;
+        if (!EnhancedBlockEntityRegistry.BLOCKS.containsKey(state.getBlock())) return;
 
         if (enhanceSigns) {
             //? if <= 1.21.11 {
