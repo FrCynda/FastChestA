@@ -55,9 +55,17 @@ public class BuiltChunkMixin implements ChunkRebuildTaskAccess {
         var pos = SectionPos.of(self.getRenderOrigin());
         //?}
 
-        if (WorldUtil.CHUNK_UPDATE_TASKS.containsKey(pos)) {
-            this.enhanced_bes$setTaskAfterRebuild(WorldUtil.CHUNK_UPDATE_TASKS.remove(pos));
-        }
+        var incoming = WorldUtil.CHUNK_UPDATE_TASKS.remove(pos);
+        if (incoming == null) return;
+
+        // A section can be claimed twice before its pending task runs (e.g. both halves of a
+        // double chest dirtying the same section back to back) -- merge instead of overwriting,
+        // or the first chest's callback is silently dropped and it's left stuck out of sync.
+        var existing = this.enhanced_bes$getTaskAfterRebuild();
+        this.enhanced_bes$setTaskAfterRebuild(existing == null ? incoming : () -> {
+            existing.run();
+            incoming.run();
+        });
     }
 
     //? if >= 26.2 {
