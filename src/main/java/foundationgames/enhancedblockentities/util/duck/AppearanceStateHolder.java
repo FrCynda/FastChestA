@@ -19,6 +19,14 @@ public interface AppearanceStateHolder {
         }
 
         this.setModelState(state);
-        WorldUtil.rebuildChunkAndThen(world, pos, () -> this.setRenderState(state));
+        WorldUtil.rebuildChunkAndThen(world, pos, () -> {
+            this.setRenderState(state);
+
+            // One more remesh so the section can finally drop this entity from its
+            // renderable list, now that both states agree it's idle.
+            if (state == 0) {
+                WorldUtil.rebuildChunk(world, pos);
+            }
+        });
     }
 }

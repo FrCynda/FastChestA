@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import foundationgames.enhancedblockentities.EnhancedBlockEntityRegistry;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRenderCondition;
 import foundationgames.enhancedblockentities.client.render.BlockEntityRendererOverride;
+import foundationgames.enhancedblockentities.util.duck.AppearanceStateHolder;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -29,9 +30,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//? if >= 1.21.9 {
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-//?}
 //? if neoforge && >= 1.21.9 {
 /*import net.minecraft.client.renderer.culling.Frustum;
 *///?}
@@ -51,6 +50,23 @@ public class BlockEntityRenderDispatcherMixin {
                 entry.renderer().render(renderer, blockEntity, tickDelta, matrices, output, LevelRenderer.getLightColor(blockEntity.getLevel(), blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY);
             }
             ci.cancel();
+        }
+    }
+    *///?}
+    //? if <= 1.21.6 {
+    /*@Inject(
+            method = "getRenderer(Lnet/minecraft/world/level/block/entity/BlockEntity;)Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private <T extends BlockEntity> void enhanced_bes$skipOverriddenRenderer(T blockEntity, CallbackInfoReturnable<BlockEntityRenderer<T>> cir) {
+        if (blockEntity.getLevel() == null) return;
+        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.BLOCKS.get(blockEntity.getBlockState().getBlock());
+        // modelState flips the moment the lid shuts, renderState only once the closed model has
+        // actually landed. Excluding on modelState alone drops the lid for a frame in between.
+        if (entry != null && blockEntity instanceof AppearanceStateHolder holder
+                && holder.getModelState() == 0 && holder.getRenderState() == 0) {
+            cir.setReturnValue(null);
         }
     }
     *///?}
@@ -74,6 +90,24 @@ public class BlockEntityRenderDispatcherMixin {
     private static boolean enhanced_bes$isOverridden(BlockEntity blockEntity) {
         EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.BLOCKS.get(blockEntity.getBlockState().getBlock());
         return entry != null && !entry.condition().shouldRender(blockEntity);
+    }
+
+    // Vanilla stopped checking getRenderer() here, so this is a no-op for vanilla terrain now --
+    // but Sodium's chunk builder still does its own getRenderer() check, so this is what gives
+    // Sodium users the idle-chest speedup on newer versions too.
+    @Inject(
+            method = "getRenderer(Lnet/minecraft/world/level/block/entity/BlockEntity;)Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private <T extends BlockEntity> void enhanced_bes$skipOverriddenRenderer(T blockEntity, CallbackInfoReturnable<BlockEntityRenderer<T, ?>> cir) {
+        if (blockEntity.getLevel() == null) return;
+        EnhancedBlockEntityRegistry.Entry entry = EnhancedBlockEntityRegistry.BLOCKS.get(blockEntity.getBlockState().getBlock());
+        // Same reasoning as the <= 1.21.6 branch above.
+        if (entry != null && blockEntity instanceof AppearanceStateHolder holder
+                && holder.getModelState() == 0 && holder.getRenderState() == 0) {
+            cir.setReturnValue(null);
+        }
     }
 
     //? if neoforge && <= 26.1 {

@@ -69,7 +69,7 @@ public class BuiltChunkMixin implements ChunkRebuildTaskAccess {
     }
 
     //? if >= 26.2 {
-    @Inject(method = "setSectionMesh", at = @At("HEAD"))
+    @Inject(method = "setSectionMesh", at = @At("RETURN"))
     private void enhanced_bes$runPostRebuildTask(SectionMesh mesh, CallbackInfoReturnable<SectionMesh> cir) {
         this.enhanced_bes$runAfterRebuildTask();
     }

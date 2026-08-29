@@ -37,7 +37,7 @@ public class WorldRendererMixin {
     //?}
 
     //? if <= 26.1 {
-    /*@Inject(method = "addRecentlyCompiledSection", at = @At("HEAD"))
+    /*@Inject(method = "addRecentlyCompiledSection", at = @At("TAIL"))
     private void enhanced_bes$runPostRebuildTask(SectionRenderDispatcher.RenderSection chunk, CallbackInfo ci) {
         ((ChunkRebuildTaskAccess) chunk).enhanced_bes$runAfterRebuildTask();
     }
