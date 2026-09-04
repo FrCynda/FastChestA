@@ -58,11 +58,17 @@ public class RenderSectionManagerMixin {
         if (WorldUtil.CHUNK_UPDATE_TASKS.isEmpty()) return;
 
         var pos = SectionPos.of(section.getChunkX(), section.getChunkY(), section.getChunkZ());
+        var incoming = WorldUtil.CHUNK_UPDATE_TASKS.remove(pos);
+        if (incoming == null) return;
 
-        if (WorldUtil.CHUNK_UPDATE_TASKS.containsKey(pos)) {
-            var task = WorldUtil.CHUNK_UPDATE_TASKS.remove(pos);
-            ((ChunkRebuildTaskAccess) section).enhanced_bes$setTaskAfterRebuild(task);
-        }
+        // Merge with whatever's already pending -- a double chest can dirty the same
+        // section twice before the first task runs, and overwriting drops it.
+        var access = (ChunkRebuildTaskAccess) section;
+        var existing = access.enhanced_bes$getTaskAfterRebuild();
+        access.enhanced_bes$setTaskAfterRebuild(existing == null ? incoming : () -> {
+            existing.run();
+            incoming.run();
+        });
     }
 }
 //?}
