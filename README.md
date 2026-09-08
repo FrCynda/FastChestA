@@ -1,47 +1,50 @@
-# UNOFFICIAL PORT
+# FastChest Animated
 
-This is an unofficial port of the original [Enhanced Block Entities mod](https://modrinth.com/mod/ebe), adding support for newer minecraft versions (1.21.5+) as well as Forge and NeoForge!
+A Fabric mod for Minecraft that makes chests fast **and** keeps their opening animation.
 
-## Enhanced Block Entities
+Normally you have to pick one of two trade-offs. Some mods (like FastChest) make chests almost free to have around, but the lid stops animating — chests just snap open and closed. Other mods (like Enhanced Block Entities) keep the nice smooth lid animation, but every chest still costs a little bit of performance just sitting there closed, even if you never open it.
 
-EBE is a **100% client side** Minecraft mod which aims to increase the performance of block entity rendering, as well as offer customizability via resource packs. <br/><br/>
-**How does it work?** EBE Makes some block entities use baked block models rather than laggy entity models. <br/><br/>
-**Is it just an optimization mod?** EBE isn't *just* an optimization mod, some side effects of its optimizations are many visual improvements. <br/>
-These may include:
-- Smooth lighting on block entities
-- Being able to remodel block entities with block models
-- Toggling features like christmas chests
-- Being able to see block entities from as far away as possible
-  <br/><br/>
+This mod is built on top of both of those projects and gets you both things at once: chests that sit there costing almost nothing when closed, and still open and close with the normal smooth animation when you actually use them. The trick is that a closed chest simply isn't doing any work in the background — it "wakes up" for the moment you open or close it, and goes back to sleep the instant the lid finishes moving.
 
-**What about animations?** The best part about EBE is that you still get to keep animations, while gaining the performance boost of baked models! Most animated block entity models will only render when absolutely necessary. <br/><br/>
-**Can I use it with Sodium?** Yes.<br/><br/>
-- EBE 0.10.2 and above are **fully compatible with Sodium 0.6+**
-- Earlier EBE versions require installing [Indium](https://modrinth.com/mod/indium) along with Sodium 0.5.11 or below.
+## How it compares
+
+Tested with 64,000 chests placed in a 40×40×40 cube, all closed, standing where you can see the whole thing:
+
+| | Vanilla Minecraft | FastChest | FastChest Animated (this mod) |
+|---|:---:|:---:|:---:|
+| Chests have an opening animation | ✅ | ❌ | ✅ |
+| Closed chests are cheap to have around | ❌ | ✅ | ✅ |
+| Frame rate with a huge wall of chests | Lowest | ~300 FPS | ~230-290 FPS |
+
+FastChest is still a hair faster, since it does nothing at all for a closed chest, but it also permanently gives up the animation to get there. This mod gets close to that same speed while keeping the part FastChest gives up.
+
+## Credit
+
+This mod wouldn't exist without two other projects:
+
+- **[Enhanced Block Entities](https://modrinth.com/mod/ebe)** by FoundationGames, and its continuation **Enhanced Block Entities Reloaded** by Mat0u5 — this mod is built directly on top of that codebase, and it's where the animation system and the visual improvements (smooth lighting on block entities, resource pack support, seeing chests from far away, etc.) come from.
+- **[FastChest](https://modrinth.com/mod/fastchest)** by FakeDomi — the idea of making a closed chest do nothing at all until it's actually opened is theirs. This mod adapts that idea so it works alongside the animation instead of replacing it.
+
+See `THIRD_PARTY.md` for full license details.
+
+## Supported versions
+
+Minecraft 1.21 and newer, Fabric only.
 
 ## FAQ and Help
 
-**Q: I need help with the mod/need to report a bug!** <br/>
-**A:**  *If the issue is a BUG* please report it on our issue tracker ("Issues" tab at the top of the page)<br/><br/>
+**Q: I need help with the mod / need to report a bug!** <br/>
+**A:** Please report it on the Issues tab at the top of this page.
 
 **Q: My chests are invisible!** <br/>
-**A:** You may be using a resource pack that conflicts with EBE. Open the Block Entity Settings menu (through EBE's Mod Menu entry or through vanilla Video Settings) and enable "Force Resource Pack Compatibility".
+**A:** You may be using a resource pack that conflicts with this mod. Open the Block Entity Settings menu (through this mod's Mod Menu entry, or through vanilla Video Settings) and enable "Force Resource Pack Compatibility".
 
 **Q: My chests are still invisible!** <br/>
-**A:** You're likely using a Sodium version lower than 0.4, which doesn't support certain Fabric Rendering features by default. If you need to use a Sodium version lower than 0.4 with EBE, you should install [Indium](https://modrinth.com/mod/indium). <br/><br/>
+**A:** You're likely using a Sodium version that doesn't support certain Fabric rendering features. Try updating Sodium, or install [Indium](https://modrinth.com/mod/indium) alongside it.
 
-## FPS Boost
-Rendering 1700 chests:
-### Vanilla
-![Before](https://github.com/FoundationGames/EnhancedBlockEntities/raw/116_indev/img/before.png)
-### With EBE
-![After](https://github.com/FoundationGames/EnhancedBlockEntities/raw/116_indev/img/after.png) <br/>
-A 155% frame rate increase!
+## For other mod developers: is your mod incompatible with this one?
 
-## Is your mod incompatible with EBE?
-If you are the developer of a mod that makes changes to block entity rendering, your mod will be broken by EBE. Fortunately, EBE provides an API that allows you to force-disable its features, allowing your mod to function instead.
-<br/>
-**You don't need to add EBE as a dependency in your development environment either!**
+If your mod changes how block entities render, this mod may break it. There's an API to force-disable specific features here so your mod can take over instead — and you don't need to add this mod as a dependency in your development environment to use it.
 
 ### Add the Entrypoint
 `fabric.mod.json`:
@@ -66,41 +69,41 @@ public void accept(Properties overrideConfigValues, Map<String, Text> overrideRe
 	overrideConfigValues.setProperty("render_enhanced_chests", "false");
 
 	overrideReasons.put("render_enhanced_chests",
-			Text.literal("EBE Enhanced Chests are not compatible with my mod!")
+			Text.literal("Enhanced Chests are not compatible with my mod!")
 					.formatted(Formatting.YELLOW));
 }
     
     ...
 			}
 ```
-The `accept(Properties, Map<String, Text>)` function is called when EBE loads config values. You can override a desired config value by setting the corresponding property of `overrideConfigValues`. This will also gray out the option in the config menu.
+The `accept(Properties, Map<String, Text>)` function is called when this mod loads config values. You can override a desired config value by setting the corresponding property of `overrideConfigValues`. This will also gray out the option in the config menu.
 <br/>
 To explain to users why your mod made that change, you can add a text component to the `overrideReasons` map corresponding to the key of the option you changed.
 <br/>
 `Text` is `net.minecraft.text.Text` when using Yarn mappings.
 
-### Need to manually reload EBE? Implement `Consumer<Runnable>`
+### Need to manually reload config? Implement `Consumer<Runnable>`
 `my.mod.compat.EBECompatibility`:
 ```java
 public class EBECompatibility implements Consumer<Runnable>, ... {
-private static Runnable ebeReloader = () -> {};
+private static Runnable reloader = () -> {};
     
     ...
 
 @Override
-public void accept(Runnable ebeConfigReloader) {
-	ebeReloader = ebeConfigReloader;
+public void accept(Runnable configReloader) {
+	reloader = configReloader;
 }
 }
 ```
-If your mod needs to modify EBE's config values depending on loaded resources, it may encounter load order problems. This can be somewhat fixed by manually reloading EBE.
+If your mod needs to modify this mod's config values depending on loaded resources, it may encounter load order problems. This can be somewhat fixed by manually reloading.
 <br/>
-The `accept(Runnable)` function is called when EBE is first loaded. The `Runnable` executes `EnhancedBlockEntities.load()`. Store this in a field so you can execute it whenever necessary.
+The `accept(Runnable)` function is called when this mod is first loaded. The `Runnable` executes the mod's internal reload. Store this in a field so you can execute it whenever necessary.
 ```java
 void onMyModResourceReload() {
 	EBECompatibility.someParameter = true;
-	EBECompatibility.ebeReloader.run();
-	// Your config modification handler in EBECompatibility can change 
+	EBECompatibility.reloader.run();
+	// Your config modification handler in EBECompatibility can change
 	// its behavior based on EBECompatibility.someParameter.
 }
 ```
