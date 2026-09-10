@@ -12,9 +12,9 @@ Tested with 64,000 chests placed in a 40×40×40 cube, all closed, standing wher
 
 | | Vanilla Minecraft | Enhanced Block Entities | FastChest | FastChest Animated (this mod) |
 |---|:---:|:---:|:---:|:---:|
-| Chests have an opening animation | ✅ | ✅ | ❌ | ✅ |
-| Closed chests are cheap to have around | ❌ | ❌ | ✅ | ✅ |
-| Frame rate with a huge wall of chests | ~6 FPS | ~120 FPS | ~300 FPS | ~300 FPS |
+| Chests have an opening animation | 🟢 | 🟢 | 🔴 | 🟢 |
+| Closed chests are cheap to have around | 🔴 | 🟠 | 🟢 | 🟢 |
+| Frame rate with 64,000 chests | ~6 FPS | ~120 FPS | ~300 FPS | ~300 FPS |
 
 This mod matches FastChest's speed while keeping the animation FastChest gives up.
 
