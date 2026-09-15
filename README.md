@@ -18,6 +18,11 @@ Tested with 64,000 chests placed in a 40x40x40 cube, all closed, standing where 
 
 This mod matches FastChest's speed while keeping the animation that FastChest gives up.
 
+Without this mod (left) vs. with it (right), same 64,000-chest scene:
+
+![Without FastChest Animated](img/before.png)
+![With FastChest Animated](img/after.png)
+
 ## Credit
 
 This mod wouldn't exist without two other projects:
