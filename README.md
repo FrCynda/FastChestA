@@ -1,4 +1,4 @@
-# FastChest Animated
+# FastChestAnimated
 
 A Fabric mod for Minecraft that makes chests fast and keeps their opening animation.
 
@@ -10,7 +10,7 @@ This mod is built on top of both projects and gives you both at once. Chests bar
 
 Tested with 64,000 chests placed in a 40x40x40 cube, all closed, standing where you can see the whole thing (the same spot with no chests placed runs at about 1300 FPS):
 
-| | Vanilla Minecraft | Enhanced Block Entities | FastChest | FastChest Animated (this mod) |
+| | Vanilla Minecraft | Enhanced Block Entities | FastChest | FastChestAnimated (this mod) |
 |---|:---:|:---:|:---:|:---:|
 | Chests have an opening animation | 🟢 | 🟢 | 🔴 | 🟢 |
 | Closed chests are cheap to have around | 🔴 | 🟠 | 🟢 | 🟢 |
@@ -18,10 +18,10 @@ Tested with 64,000 chests placed in a 40x40x40 cube, all closed, standing where 
 
 This mod matches FastChest's speed while keeping the animation that FastChest gives up.
 
-Without this mod (left) vs. with it (right), same 64,000-chest scene:
+Without this mod (left) vs. with it (right), same 64,000-chest scene, Sodium installed:
 
-![Without FastChest Animated](img/before.png)
-![With FastChest Animated](img/after.png)
+![Without FastChestAnimated](img/before.png)
+![With FastChestAnimated](img/after.png)
 
 ## Credit
 
